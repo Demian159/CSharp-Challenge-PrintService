@@ -1,5 +1,6 @@
 ﻿using CodingChallenge.Data.Solution.Entities.Language;
 using CodingChallenge.Data.Solution.Entities.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,23 +14,32 @@ namespace CodingChallenge.Data.Solution
 
         public string Print(List<Shape> shapes, LanguageIdentifier selectedLanguage)
         {
-            Language = GetSelectedLanguage(selectedLanguage);
+            try
+            {
+                Language = GetSelectedLanguage(selectedLanguage);
 
-            var stringBuilder = new StringBuilder();
+                var stringBuilder = new StringBuilder();
 
-            if (!shapes.Any()) return stringBuilder.Append(Language.EmptyListOfShapes).ToString();
+                if (!shapes.Any()) return stringBuilder.Append(Language.EmptyListOfShapes).ToString();
 
-            stringBuilder.Append(Language.ShapesReport);
+                stringBuilder.Append(Language.ShapesReport);
 
-            var shapeGroupDetails = GetShapeGroupDetailsList(shapes.GroupBy(s => s.ShapeNameIdentifier));
+                var shapeGroupDetails = GetShapeGroupDetailsList(shapes.GroupBy(s => s.ShapeNameIdentifier));
 
-            shapeGroupDetails.ForEach(sdg => stringBuilder.Append(GetShapesDescriptionLine(Language, sdg.ShapesIdentifier, sdg.Amount, sdg.TotalArea, sdg.TotalPerimeter)));
+                shapeGroupDetails.ForEach(sdg => stringBuilder.Append(GetShapesDescriptionLine(Language, sdg.ShapesIdentifier, sdg.Amount, sdg.TotalArea, sdg.TotalPerimeter)));
 
-            stringBuilder.Append(Language.FooterTotal);
+                stringBuilder.Append(Language.FooterTotal);
 
-            stringBuilder.Append($"{Language.Amount}: {shapeGroupDetails.Sum(sg => sg.Amount)} | {Language.Perimeter}: {shapeGroupDetails.Sum(sg => sg.TotalPerimeter).ToString("#.##")} | {Language.Area}: {shapeGroupDetails.Sum(sg => sg.TotalArea).ToString("#.##")}");
+                stringBuilder.Append($"{Language.Amount}: {shapeGroupDetails.Sum(sg => sg.Amount)} | {Language.Perimeter}: {shapeGroupDetails.Sum(sg => sg.TotalPerimeter).ToString("#.##")} | {Language.Area}: {shapeGroupDetails.Sum(sg => sg.TotalArea).ToString("#.##")}");
 
-            return stringBuilder.ToString();
+                return stringBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Log
+                Console.WriteLine(ex);
+                throw;
+            }
         }
 
         private List<ShapeGroupDetail> GetShapeGroupDetailsList(IEnumerable<IGrouping<ShapeIdentifier,Shape>> shapesGroupByIdentifier)
@@ -64,7 +74,7 @@ namespace CodingChallenge.Data.Solution
             return languageOptions.FirstOrDefault(lp => lp.LanguageIdentifier.Equals(selectedLanguage));
         }
 
-        public string GetShapesDescriptionLine(ILanguage language, ShapeIdentifier shapeNameIdentifier, int amount, decimal area, decimal perimeter)
+        private string GetShapesDescriptionLine(ILanguage language, ShapeIdentifier shapeNameIdentifier, int amount, decimal area, decimal perimeter)
         {
             return $"{amount} {language.GetShapeName(shapeNameIdentifier, amount)} | {language.Area} {area:#.##} | {language.Perimeter} {perimeter:#.##} <br/>";
         }

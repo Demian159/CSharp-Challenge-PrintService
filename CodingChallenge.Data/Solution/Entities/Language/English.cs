@@ -20,7 +20,6 @@ namespace CodingChallenge.Data.Solution.Entities.Language
             {
                 new ShapeName(ShapeIdentifier.Square, "Square", "Squares" ),
                 new ShapeName(ShapeIdentifier.Circle, "Circle", "Circles" ),
-                //TODO Should be "Equilateral Triangle"
                 new ShapeName(ShapeIdentifier.EquilateralTriangle, "Triangle", "Triangles" ),
             };
 

@@ -8,7 +8,7 @@ namespace CodingChallenge.Data.Solution.Entities.Shapes
         public Circle(decimal sideWidth)
         {
             ShapeNameIdentifier = ShapeIdentifier.Circle;
-            SideWidth = sideWidth;
+            SideWidth = sideWidth > 0 ? sideWidth :  throw new ArgumentException(nameof(SideWidth) + " value can't be zero or negative.");
             Area = CalculateArea();
             Perimeter = CalculatePerimeter();
         }

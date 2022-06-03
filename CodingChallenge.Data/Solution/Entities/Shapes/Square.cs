@@ -1,4 +1,5 @@
-﻿using static CodingChallenge.Data.Solution.Entities.Statics.StaticDataHelper;
+﻿using System;
+using static CodingChallenge.Data.Solution.Entities.Statics.StaticDataHelper;
 
 namespace CodingChallenge.Data.Solution.Entities.Shapes
 {
@@ -9,7 +10,7 @@ namespace CodingChallenge.Data.Solution.Entities.Shapes
         public Square(decimal sideWidth)
         {
             ShapeNameIdentifier = ShapeIdentifier.Square;
-            SideWidth = sideWidth;
+            SideWidth = sideWidth > 0 ? sideWidth : throw new ArgumentException(nameof(SideWidth) + " value can't be zero or negative.");
             Area = CalculateArea();
             Perimeter = CalculatePerimeter();
         }

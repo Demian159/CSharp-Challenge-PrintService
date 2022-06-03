@@ -10,7 +10,7 @@ namespace CodingChallenge.Data.Solution
         public EquilateralTriangle(decimal sideWidth)
         {
             ShapeNameIdentifier = ShapeIdentifier.EquilateralTriangle;
-            SideWidth = sideWidth;
+            SideWidth = sideWidth > 0 ? sideWidth : throw new ArgumentException(nameof(SideWidth) + " value can't be zero or negative.");
             Area = CalculateArea();
             Perimeter = CalculatePerimeter();
         }
